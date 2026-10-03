@@ -5,6 +5,7 @@ import SmartImage from "../components/SmartImage.astro";
 import { getEntry } from "astro:content";
 import { getPage } from "../lib/content";
 import { originalName, photoLayout, webpSrc } from "../lib/images";
+import { withBase } from "../lib/paths";
 
 const page = await getPage("media");
 const gallery = await getEntry("media", "gallery");
@@ -35,9 +36,9 @@ const press = await Promise.all(
         photos.map((photo, index) => (
           <a
             class={`bento-cell bento-${photo.shape}`}
-            href={photo.src}
+            href={withBase(photo.src)}
             data-lightbox={index}
-            data-webp={webpSrc(photo.src)}
+            data-webp={withBase(webpSrc(photo.src))}
             data-original-name={originalName(photo.src)}
           >
             <figure>
@@ -65,16 +66,16 @@ const press = await Promise.all(
     <h2 class="section-title" data-reveal>{data.pressHeading}</h2>
     <p class="credit" data-reveal>{data.pressCredit}</p>
     <p class="credit" data-reveal>
-      <a class="download" href={data.pressDownload.href}>{data.pressDownload.label}</a>
+      <a class="download" href={withBase(data.pressDownload.href)}>{data.pressDownload.label}</a>
     </p>
     <div class="gallery">
       {
         press.map((photo, index) => (
           <a
             class={`bento-cell bento-${photo.shape}`}
-            href={photo.src}
+            href={withBase(photo.src)}
             data-lightbox={photos.length + index}
-            data-webp={webpSrc(photo.src)}
+            data-webp={withBase(webpSrc(photo.src))}
             data-original-name={originalName(photo.src)}
           >
             <SmartImage

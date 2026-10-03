@@ -2,5 +2,6 @@
 import { defineConfig } from "astro/config";
 
 export default defineConfig({
-  site: "https://www.nicolobottasso.com",
+  site: "https://gabrielefronze.github.io",
+  base: "/bottasso-website",
 });

@@ -3,6 +3,7 @@ import "../styles/global.css";
 import SiteHeader from "../components/SiteHeader.astro";
 import SiteFooter from "../components/SiteFooter.astro";
 import { getSite } from "../lib/content";
+import { withBase } from "../lib/paths";
 
 interface Props {
   title?: string;
@@ -32,11 +33,11 @@ const canonical = Astro.url.href;
     <title>{pageTitle}</title>
     <meta name="description" content={desc} />
     <link rel="canonical" href={canonical} />
-    <link rel="icon" href="/images/portrait-volpina.jpg" type="image/jpeg" />
+    <link rel="icon" href={withBase("/images/portrait-volpina.jpg")} type="image/jpeg" />
     <meta name="theme-color" content="#ffffff" />
     <meta property="og:title" content={pageTitle} />
     <meta property="og:description" content={desc} />
-    <meta property="og:image" content={new URL(site.portrait, Astro.url)} />
+    <meta property="og:image" content={new URL(withBase(site.portrait), Astro.site ?? Astro.url)} />
     <meta property="og:type" content="website" />
   </head>
   <body>

@@ -4,6 +4,7 @@ import PageTitle from "../components/PageTitle.astro";
 import SmartImage from "../components/SmartImage.astro";
 import { getPage } from "../lib/content";
 import { renderCopy } from "../lib/copy";
+import { withBase } from "../lib/paths";
 
 const page = await getPage("about");
 ---
@@ -27,7 +28,7 @@ const page = await getPage("about");
         <div class="file-row">
           {
             page.files.map((file) => (
-              <a href={file.href}>{file.label}</a>
+              <a href={withBase(file.href)}>{file.label}</a>
             ))
           }
         </div>

@@ -1,5 +1,6 @@
 ---
 import { webpSrc } from "../lib/images";
+import { withBase } from "../lib/paths";
 
 interface Props {
   src: string;
@@ -13,6 +14,6 @@ const { src, alt, loading = "lazy", width, height } = Astro.props;
 ---
 
 <picture>
-  <source type="image/webp" srcset={webpSrc(src)} />
-  <img src={src} alt={alt} loading={loading} width={width} height={height} />
+  <source type="image/webp" srcset={withBase(webpSrc(src))} />
+  <img src={withBase(src)} alt={alt} loading={loading} width={width} height={height} />
 </picture>

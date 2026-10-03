@@ -1,14 +1,15 @@
 ---
 import { getSite } from "../lib/content";
+import { pagePath, withBase } from "../lib/paths";
 import SmartImage from "./SmartImage.astro";
 
 const site = await getSite();
-const path = Astro.url.pathname.replace(/\/$/, "") || "/";
+const path = pagePath(Astro.url.pathname);
 ---
 
 <div class="site-chrome">
   <header class="site-header">
-    <a class="brand" href="/">
+    <a class="brand" href={withBase("/")}>
       <SmartImage src={site.portrait} alt={site.name} width={48} height={72} loading="eager" />
       <span class="brand-text">
         <strong>{site.name}</strong>
@@ -22,7 +23,7 @@ const path = Astro.url.pathname.replace(/\/$/, "") || "/";
         item.href === "/" ? (
           <a
             class="nav-home"
-            href={item.href}
+            href={withBase(item.href)}
             aria-label={item.label}
             title={item.label}
             aria-current={path === item.href ? "page" : undefined}
@@ -33,7 +34,7 @@ const path = Astro.url.pathname.replace(/\/$/, "") || "/";
             </svg>
           </a>
         ) : (
-          <a href={item.href} aria-current={path === item.href ? "page" : undefined}>
+          <a href={withBase(item.href)} aria-current={path === item.href ? "page" : undefined}>
             {item.label}
           </a>
         ),

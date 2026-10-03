@@ -8,6 +8,7 @@ import { getEntry } from "astro:content";
 import { getPage, getSite, sortedCollection } from "../lib/content";
 import { renderCopy } from "../lib/copy";
 import { splitWords } from "../lib/words";
+import { withBase } from "../lib/paths";
 
 const site = await getSite();
 const page = await getPage("home");
@@ -83,7 +84,7 @@ let charIndex = 0;
               </p>
               <div class="hero-ctas">
                 {intro.ctas.map((cta) => (
-                  <a class="magnet" href={cta.href} rel={cta.href.startsWith("http") ? "noreferrer" : undefined}>
+                  <a class="magnet" href={withBase(cta.href)} rel={cta.href.startsWith("http") ? "noreferrer" : undefined}>
                     <span>{cta.label}</span>
                   </a>
                 ))}
@@ -141,7 +142,7 @@ let charIndex = 0;
     <section class="home-section stack-section">
       <header class="home-head" data-reveal>
         <h2 class="section-title">{labels.work}</h2>
-        <a class="line-link" href="/work">{labels.workAll}</a>
+        <a class="line-link" href={withBase("/work")}>{labels.workAll}</a>
       </header>
       <div class="stack">
         {
@@ -177,7 +178,7 @@ let charIndex = 0;
         <section class="home-section nextup">
           <header class="home-head" data-reveal>
             <h2 class="section-title">{labels.agenda}</h2>
-            <a class="line-link" href="/agenda">{labels.agendaAll}</a>
+            <a class="line-link" href={withBase("/agenda")}>{labels.agendaAll}</a>
           </header>
           <ol class="nextup-list">
             {upcoming.map((event, index) => (
@@ -201,13 +202,13 @@ let charIndex = 0;
         <section class="strip" aria-label={labels.media}>
           <header class="home-head strip-head" data-reveal>
             <h2 class="section-title">{labels.media}</h2>
-            <a class="line-link" href="/media">{labels.mediaAll}</a>
+            <a class="line-link" href={withBase("/media")}>{labels.mediaAll}</a>
           </header>
           {[stripA, stripB].map((row, rowIndex) => (
             <div class:list={["strip-row", { reverse: rowIndex === 1 }]}>
               {[0, 1].map((copy) =>
                 row.map((photo) => (
-                  <a href="/media" tabindex={copy === 1 ? -1 : undefined} aria-hidden={copy === 1 || undefined}>
+                  <a href={withBase("/media")} tabindex={copy === 1 ? -1 : undefined} aria-hidden={copy === 1 || undefined}>
                     <SmartImage src={photo.src} alt={copy === 0 ? photo.alt : ""} />
                   </a>
                 )),
@@ -244,19 +245,19 @@ let charIndex = 0;
                 <h2>{item.data.title}</h2>
                 <div set:html={renderCopy(item.data.body)} />
                 <p>
-                  <a class="cta" href={item.data.href}>
+                  <a class="cta" href={withBase(item.data.href)}>
                     {item.data.ctaLabel}
                   </a>
                 </p>
                 {item.data.extraLinks.map((link) => (
                   <p>
-                    <a href={link.href}>
+                    <a href={withBase(link.href)}>
                       <strong>{link.label}</strong>
                     </a>
                   </p>
                 ))}
               </div>
-              <a class="news-visual" href={item.data.href}>
+              <a class="news-visual" href={withBase(item.data.href)}>
                 <SmartImage src={item.data.image} alt={item.data.imageAlt} />
               </a>
             </article>
