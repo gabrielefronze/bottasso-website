@@ -1,0 +1,68 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PageTitle from "../components/PageTitle.astro";
+import SmartImage from "../components/SmartImage.astro";
+import { getEntry } from "astro:content";
+import { getPage } from "../lib/content";
+
+const page = await getPage("agenda");
+const agenda = await getEntry("agenda", "events");
+if (!agenda) throw new Error("Missing agenda events");
+const data = agenda.data;
+---
+
+<BaseLayout title={page.title}>
+  <div class="wrap">
+    <div data-reveal>
+      <PageTitle title={page.title} />
+    </div>
+    <figure class="hero-photo" data-reveal>
+      <SmartImage src={data.hero} alt="" />
+      <figcaption>{data.heroCredit}</figcaption>
+    </figure>
+
+    <h2 class="section-title" data-reveal>{data.upcomingHeading}</h2>
+    <table class="event-table upcoming" data-reveal>
+      <tbody>
+        {
+          data.upcoming.map((event) => (
+            <tr>
+              <td>{event.date}</td>
+              <td>{event.title}</td>
+              <td>{event.venue}</td>
+              <td>{event.city}</td>
+            </tr>
+          ))
+        }
+      </tbody>
+    </table>
+
+    <h2 class="section-title" data-reveal>{data.pastHeading}</h2>
+    <table class="event-table" data-reveal>
+      <tbody>
+        {
+          data.past.map((group) => (
+            <tr>
+              <td class="year">{group.year}</td>
+              <td>
+                {group.events.map((event) => (
+                  <div>{event.title}</div>
+                ))}
+              </td>
+              <td>
+                {group.events.map((event) => (
+                  <div>{event.venue}</div>
+                ))}
+              </td>
+              <td>
+                {group.events.map((event) => (
+                  <div>{event.city}</div>
+                ))}
+              </td>
+            </tr>
+          ))
+        }
+      </tbody>
+    </table>
+  </div>
+</BaseLayout>

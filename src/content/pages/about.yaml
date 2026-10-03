@@ -1,0 +1,39 @@
+title: ABOUT
+portrait: /images/about/portrait.jpg
+portraitCredit: "Photo: Federico Castelli"
+bio: |
+  **Nicolò Bottasso** (b. 1994 in Italy, based in the Netherlands) is a violinist, trumpeter, composer and sound artist working across **experimental**, **contemporary** and **folk-derived** music.
+  His practice centres on **improvisation**, **timbre** and **repetition**, integrating acoustic instruments and live processing into an organic sonic practice in dialogue with moving image, archival material and site-specific performance. He is interested in how inherited musical languages shift when they encounter new contexts and modes of perception.
+  His long-standing collaboration with his brother Simone as **Duo Bottasso** has been a continuous laboratory for this practice for nearly two decades.
+  Since 2024, he has performed on a **tenore d’amore**, a custom sympathetic-string instrument developed with luthier Cesar Sakellarides, combining features of the baryton violin, viola d’amore and Hardanger fiddle.
+  Selected presentations of his projects include **Eye Filmmuseum** (Amsterdam), **LAC** (Lugano), **Deutsches Filminstitut & Filmmuseum DFF** (Frankfurt), **Nonagon Festival** (Svanö) and **MACRO** (Rome).
+files:
+  - label: CV
+    href: /files/CV-Nico-V6.pdf
+  - label: portfolio
+    href: /files/Nicolo-Bottasso-PORTFOLIO-V7.pdf
+reviews:
+  - quote: >
+      One of the things I admire most about Nicolò is his ability to integrate
+      rapidly and meaningfully within a pre-existing musical context. His
+      improvisational input has been essential to shaping the distinctive
+      character of Caravan. As a musician, he brings not only strong technical
+      skills, but also an open ear and a genuine curiosity that enriches every
+      collaboration
+    name: Julian Schneemann
+    role: pianist, artistic director of Pynarello Ensemble
+  - quote: >
+      Postcards from Italy is a dense, intense, and moving project. Contemporary
+      and right
+    name: Paolo Fresu
+    role: trumpeter, artistic director of Time in Jazz
+  - quote: >
+      An artist, but above all a storyteller, who undoubtedly possesses a
+      visceral connection with his inner world, and conveys it to the audience
+      in a way that transcends the physicality of an instrument, without fear of
+      exposing his most vulnerable self: inevitably, whose who listen to him
+      find themselves vibrating in response
+    name: Fabiola Tedesco
+    role: soloist, concertmaster at Noord Nederlands Orkest
+sections:
+  reviews: reviews

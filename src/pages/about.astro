@@ -1,0 +1,47 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PageTitle from "../components/PageTitle.astro";
+import SmartImage from "../components/SmartImage.astro";
+import { getPage } from "../lib/content";
+import { renderCopy } from "../lib/copy";
+
+const page = await getPage("about");
+---
+
+<BaseLayout title={page.title} description="About Nicolò Bottasso">
+  <div class="wrap">
+    <div data-reveal>
+      <PageTitle title={page.title} />
+    </div>
+    <div class="about-layout">
+      {
+        page.portrait && (
+          <figure class="about-portrait" data-reveal>
+            <SmartImage src={page.portrait} alt="Nicolò Bottasso" loading="eager" />
+            {page.portraitCredit && <figcaption>{page.portraitCredit}</figcaption>}
+          </figure>
+        )
+      }
+      <div data-reveal>
+        {page.bio && <div class="bio" set:html={renderCopy(page.bio)} />}
+        <div class="file-row">
+          {
+            page.files.map((file) => (
+              <a href={file.href}>{file.label}</a>
+            ))
+          }
+        </div>
+      </div>
+    </div>
+    <h2 class="section-title" data-reveal>{page.sections?.reviews}</h2>
+    {
+      page.reviews.map((review) => (
+        <figure class="review" data-reveal>
+          <blockquote>“{review.quote.trim()}”</blockquote>
+          <cite>{review.name}</cite>
+          <div class="role">{review.role}</div>
+        </figure>
+      ))
+    }
+  </div>
+</BaseLayout>

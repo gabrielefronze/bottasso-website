@@ -1,0 +1,98 @@
+photosHeading: photos
+pressHeading: press images
+pressCredit: "photo credit: Federico Castelli"
+pressDownload:
+  label: download all HD
+  href: /files/Nicolo_Bottasso_PressHD_Ph_FedericoCastelli.zip
+photos:
+  - src: /images/media/photos/photo-01.jpg
+    alt: Performing at Batavierhuis
+    caption: 2025 – Batavierhuis, Rotterdam
+    credit: "Photo: Marc van der Heijde"
+  - src: /images/media/photos/photo-02.jpg
+    alt: Portrait at VolpinaFest
+    caption: 2026 – VolpinaFest, La Piatta
+    credit: "Photo: Flavia Escartin"
+  - src: /images/media/photos/photo-03.jpeg
+    alt: Stage silhouette at Heroes Festival
+    caption: 2025 – Heroes Festival, Torino
+    credit: "Photo: Fabiana Amato"
+  - src: /images/media/photos/photo-04.jpg
+    alt: Concert at North Sea Round Town
+    caption: 2022 – North Sea Round Town, Rotterdam
+    credit: "Photo: Eric van Nieuwland"
+  - src: /images/media/photos/photo-05.jpg
+    alt: Ensemble on stage in Winterthur
+    caption: 2025 – Stadthaus, Winterthur
+    credit: "Photo: Michael Lio"
+  - src: /images/media/photos/photo-06.jpg
+    alt: Outdoor crowd at Eurovision Torino
+    caption: 2022 – Eurovision, Torino
+  - src: /images/media/photos/photo-07.jpg
+    alt: Concert at Combin en Musique
+    caption: 2025 – Combin en Musique, Doues
+    credit: "Photo: Max Monticone"
+  - src: /images/media/photos/photo-08.jpg
+    alt: Concert at Combin en Musique
+    caption: 2025 – Combin en Musique, Doues
+    credit: "Photo: Max Monticone"
+  - src: /images/media/photos/photo-09.jpg
+    alt: Concert at Combin en Musique
+    caption: 2025 – Combin en Musique, Doues
+    credit: "Photo: Max Monticone"
+  - src: /images/media/photos/photo-10.jpg
+    alt: Playing trumpet
+    caption: 2022 – casadirosa, Loco
+    credit: "Photo: Johannes Ruehl"
+  - src: /images/media/photos/photo-11.jpg
+    alt: Playing guitar at Time in Jazz
+    caption: 2025 – Time in Jazz, Berchidda
+    credit: "Photo: Francesca Sara Cauli"
+  - src: /images/media/photos/photo-12.jpg
+    alt: Playing trumpet at Gallus Theater
+    caption: 2022 – Gallus Theater, Frankfurt
+    credit: "Photo: Alexandre Duarte"
+  - src: /images/media/photos/photo-13.jpg
+    alt: Playing violin in Wien
+    caption: 2023 – redpmusic, Wien
+    credit: "Photo: Arpad Hadnagy"
+  - src: /images/media/photos/photo-14.jpg
+    alt: Playing violin at Eurovision Torino
+    caption: 2022 – Eurovision, Torino
+  - src: /images/media/photos/photo-15.jpg
+    alt: Recording at Maison Musique
+    caption: 2014 – Maison Musique, Rivoli
+    credit: "Photo: Dario Dusio"
+  - src: /images/media/photos/photo-16.jpg
+    alt: Playing by Erasmusbrug
+    caption: 2018 – Rotterdam
+    credit: "Photo: Cosenude Media Projects"
+  - src: /images/media/photos/photo-17.jpg
+    alt: Portrait in Torino
+    caption: 2018 – Torino
+    credit: "Photo: Dario Dusio"
+  - src: /images/media/photos/photo-18.jpg
+    alt: Performance at Superbudda
+    caption: 2020 – Superbudda, Torino
+    credit: "Photo: Dario Dusio"
+  - src: /images/media/photos/photo-19.jpg
+    alt: Performance at Superbudda
+    caption: 2020 – Superbudda, Torino
+    credit: "Photo: Dario Dusio"
+  - src: /images/media/photos/photo-20.jpg
+    alt: Childhood photo in France
+    caption: probably around 2004 – in France
+    credit: "Photo: Jeff Dantin"
+press:
+  - src: /images/media/press/press-03.jpg
+    alt: Press portrait of Nicolò Bottasso
+  - src: /images/media/press/press-01.jpg
+    alt: Press portrait of Nicolò Bottasso
+  - src: /images/media/press/press-02.jpg
+    alt: Press portrait of Nicolò Bottasso
+  - src: /images/media/press/press-04.jpg
+    alt: Press portrait of Nicolò Bottasso
+  - src: /images/media/press/press-05.jpg
+    alt: Press portrait of Nicolò Bottasso
+  - src: /images/media/press/press-06.jpg
+    alt: Press portrait of Nicolò Bottasso

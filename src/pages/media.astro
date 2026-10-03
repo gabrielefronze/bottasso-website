@@ -1,0 +1,128 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PageTitle from "../components/PageTitle.astro";
+import SmartImage from "../components/SmartImage.astro";
+import { getEntry } from "astro:content";
+import { getPage } from "../lib/content";
+import { originalName, photoLayout, webpSrc } from "../lib/images";
+
+const page = await getPage("media");
+const gallery = await getEntry("media", "gallery");
+if (!gallery) throw new Error("Missing media gallery");
+const data = gallery.data;
+const photos = await Promise.all(
+  data.photos.map(async (photo) => ({
+    ...photo,
+    ...(await photoLayout(photo.src)),
+  })),
+);
+const press = await Promise.all(
+  data.press.map(async (photo) => ({
+    ...photo,
+    ...(await photoLayout(photo.src)),
+  })),
+);
+---
+
+<BaseLayout title={page.title}>
+  <div class="wrap bleed">
+    <div data-reveal>
+      <PageTitle title={page.title} />
+    </div>
+    <h2 class="section-title" data-reveal>{data.photosHeading}</h2>
+    <div class="gallery">
+      {
+        photos.map((photo, index) => (
+          <a
+            class={`bento-cell bento-${photo.shape}`}
+            href={photo.src}
+            data-lightbox={index}
+            data-webp={webpSrc(photo.src)}
+            data-original-name={originalName(photo.src)}
+          >
+            <figure>
+              <SmartImage
+                src={photo.src}
+                alt={photo.alt}
+                width={photo.width}
+                height={photo.height}
+              />
+              <figcaption>
+                {photo.caption}
+                {photo.credit && (
+                  <>
+                    <br />
+                    {photo.credit}
+                  </>
+                )}
+              </figcaption>
+            </figure>
+          </a>
+        ))
+      }
+    </div>
+
+    <h2 class="section-title" data-reveal>{data.pressHeading}</h2>
+    <p class="credit" data-reveal>{data.pressCredit}</p>
+    <p class="credit" data-reveal>
+      <a class="download" href={data.pressDownload.href}>{data.pressDownload.label}</a>
+    </p>
+    <div class="gallery">
+      {
+        press.map((photo, index) => (
+          <a
+            class={`bento-cell bento-${photo.shape}`}
+            href={photo.src}
+            data-lightbox={photos.length + index}
+            data-webp={webpSrc(photo.src)}
+            data-original-name={originalName(photo.src)}
+          >
+            <SmartImage
+              src={photo.src}
+              alt={photo.alt}
+              width={photo.width}
+              height={photo.height}
+            />
+          </a>
+        ))
+      }
+    </div>
+  </div>
+</BaseLayout>
+
+<dialog class="lightbox" id="lightbox">
+  <button class="lightbox-close" type="button" aria-label="Close">×</button>
+  <figure>
+    <img alt="" />
+    <figcaption></figcaption>
+    <a class="lightbox-download" href="" download>download original</a>
+  </figure>
+</dialog>
+
+<script>
+  const dialog = document.getElementById("lightbox") as HTMLDialogElement | null;
+  const img = dialog?.querySelector("img");
+  const caption = dialog?.querySelector("figcaption");
+  const download = dialog?.querySelector<HTMLAnchorElement>(".lightbox-download");
+  const items = [...document.querySelectorAll<HTMLAnchorElement>("[data-lightbox]")];
+
+  items.forEach((link) => {
+    link.addEventListener("click", (event) => {
+      event.preventDefault();
+      if (!dialog || !img) return;
+      img.src = link.dataset.webp || link.href;
+      const fig = link.querySelector("figcaption");
+      if (caption) caption.innerHTML = fig?.innerHTML ?? "";
+      if (download) {
+        download.href = link.href;
+        download.download = link.dataset.originalName ?? "";
+      }
+      dialog.showModal();
+    });
+  });
+
+  dialog?.querySelector(".lightbox-close")?.addEventListener("click", () => dialog.close());
+  dialog?.addEventListener("click", (event) => {
+    if (event.target === dialog) dialog.close();
+  });
+</script>

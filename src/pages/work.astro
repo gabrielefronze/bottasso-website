@@ -1,0 +1,89 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PageTitle from "../components/PageTitle.astro";
+import SmartImage from "../components/SmartImage.astro";
+import { getPage, sortedCollection } from "../lib/content";
+
+const page = await getPage("work");
+const projects = await sortedCollection("work");
+const collaborations = await sortedCollection("collaborations");
+const soundtracks = await sortedCollection("soundtracks");
+---
+
+<BaseLayout title={page.title}>
+  <div class="wrap bleed">
+    <div data-reveal>
+      <PageTitle title={page.title} />
+    </div>
+    <div class="work-grid">
+      {
+        projects.map((project) => {
+          const Tag = project.data.href ? "a" : "article";
+          const extra = project.data.href
+            ? { href: project.data.href, rel: "noreferrer" }
+            : {};
+          return (
+            <Tag class="work-card" data-reveal {...extra}>
+              <div class="frame">
+                <SmartImage src={project.data.image} alt={project.data.imageAlt} />
+                <div class="work-overlay">
+                  <h2>{project.data.title}</h2>
+                  {project.data.subtitle && <span class="sub">{project.data.subtitle}</span>}
+                  <span class="tags">{project.data.tags}</span>
+                  {project.data.ctaLabel && <span class="cta">{project.data.ctaLabel}</span>}
+                </div>
+              </div>
+            </Tag>
+          );
+        })
+      }
+    </div>
+
+    <div class="wrap">
+      <h2 class="section-title" data-reveal>{page.sections?.collaborations}</h2>
+      <table class="pair-list" data-reveal>
+        <tbody>
+          {
+            collaborations.map((row) => (
+              <tr>
+                <td>{row.data.partner}</td>
+                <td>
+                  {row.data.works.map((work, index) => (
+                    <>
+                      {index > 0 && " | "}
+                      <a href={work.href} rel="noreferrer">
+                        {work.label}
+                      </a>
+                    </>
+                  ))}
+                </td>
+              </tr>
+            ))
+          }
+        </tbody>
+      </table>
+
+      <h2 class="section-title" data-reveal>{page.sections?.soundtracks}</h2>
+      <table class="pair-list" data-reveal>
+        <tbody>
+          {
+            soundtracks.map((row) => (
+              <tr>
+                <td>
+                  <a href={row.data.href} rel="noreferrer">
+                    {row.data.title}
+                  </a>
+                </td>
+                <td>
+                  {row.data.credit}
+                  <br />
+                  {row.data.note}
+                </td>
+              </tr>
+            ))
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
+</BaseLayout>

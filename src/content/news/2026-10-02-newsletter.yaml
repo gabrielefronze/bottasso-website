@@ -1,0 +1,18 @@
+order: 2
+date: "2026-10-02"
+dateLabel: Friday October 2nd, 2026
+title: DUO BOTTASSO OCTOBER NEWSLETTER IS OUT!
+body: >
+  Click on the image to read about Duo Bottasso’s summer adventures, including
+  a small but daring festival in our hometown and two new collaborations with
+  filmmakers.
+
+  You can also subscribe to receive the next one.
+image: /images/news/newsletter-october-2026.jpg
+imageAlt: Audience at a Duo Bottasso concert
+ctaLabel: READ NEWSLETTER
+href: https://mailchi.mp/duobottasso/newsletter-en-october2026
+layout: image-left
+extraLinks:
+  - label: subscribe to Duo Bottasso’s newsletter
+    href: https://duobottasso.us7.list-manage.com/subscribe?u=49a0bc34c4391cb03c27b0aa1&id=9aa62ac9dd

@@ -1,0 +1,48 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PageTitle from "../components/PageTitle.astro";
+import SmartImage from "../components/SmartImage.astro";
+import { getPage, sortedCollection } from "../lib/content";
+import { renderCopy } from "../lib/copy";
+
+const page = await getPage("home");
+const news = await sortedCollection("news");
+---
+
+<BaseLayout>
+  <div class="wrap">
+    <div data-reveal>
+      <PageTitle title={page.title} />
+    </div>
+    <div class="news-list">
+      {
+        news.map((item) => (
+          <article class:list={["news-item", item.data.layout]} data-reveal>
+            <time class="news-date" datetime={item.data.date}>
+              {item.data.dateLabel}
+            </time>
+            <div class="news-copy">
+              <h2>{item.data.title}</h2>
+              <div set:html={renderCopy(item.data.body)} />
+              <p>
+                <a class="cta" href={item.data.href}>
+                  {item.data.ctaLabel}
+                </a>
+              </p>
+              {item.data.extraLinks.map((link) => (
+                <p>
+                  <a href={link.href}>
+                    <strong>{link.label}</strong>
+                  </a>
+                </p>
+              ))}
+            </div>
+            <a class="news-visual" href={item.data.href}>
+              <SmartImage src={item.data.image} alt={item.data.imageAlt} />
+            </a>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</BaseLayout>

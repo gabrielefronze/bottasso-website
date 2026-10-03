@@ -1,0 +1,27 @@
+name: Nicolò Bottasso
+taglineLines:
+  - musician / composer / sound artist
+  - curious listener
+portrait: /images/portrait-volpina.jpg
+nav:
+  - label: work
+    href: /work
+  - label: agenda
+    href: /agenda
+  - label: media
+    href: /media
+  - label: about
+    href: /about
+email: nicolo.bottasso@gmail.com
+location: based in the Netherlands
+vat: NL005111105B50
+kvk: "94811113"
+socials:
+  - label: Bandcamp
+    href: https://simonebottasso.bandcamp.com/
+  - label: Vimeo
+    href: https://vimeo.com/user109772509
+  - label: Instagram
+    href: https://www.instagram.com/nicolobottasso/
+copyright: © Nicolò Bottasso 2026
+skipLabel: Vai al contenuto

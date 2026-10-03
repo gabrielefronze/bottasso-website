@@ -1,0 +1,189 @@
+@font-face {
+  font-family: Geom;
+  font-style: normal;
+  font-weight: 300 900;
+  font-display: swap;
+  src: url("/fonts/geom-variable.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Roboto Flex";
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url("/fonts/roboto-flex.woff2") format("woff2");
+}
+
+@property --stage {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #ffffff;
+}
+
+@property --stage-lift {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #faf7f8;
+}
+
+@property --ink {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #292929;
+}
+
+@property --ink-soft {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #6e6e6e;
+}
+
+@property --teal {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #13607e;
+}
+
+@property --teal-deep {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #1f4f70;
+}
+
+@property --rule {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #d8d8d8;
+}
+
+@property --chrome {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #fffffff5;
+}
+
+@property --photo-scrim {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #2c2c3080;
+}
+
+@property --photo-overlay {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #2c2c30e0;
+}
+
+@property --nav-panel {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #fffffff5;
+}
+
+@property --lightbox {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #fffffff5;
+}
+
+@property --lightbox-backdrop {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #ffffff;
+}
+
+@property --theme-color {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #ffffff;
+}
+
+@property --on-photo {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #ffffff;
+}
+
+@property --grain-opacity {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 0.03;
+}
+
+:root {
+  --serif: Geom, "Avenir Next", "Helvetica Neue", sans-serif;
+  --sans: "Roboto Flex", "Helvetica Neue", sans-serif;
+  --space: clamp(1.1rem, 3vw, 2.5rem);
+  --wide: 1280px;
+  --theme-ease: 0.65s cubic-bezier(0.4, 0, 0.2, 1);
+  --color-scheme: light;
+  --stage: #ffffff;
+  --stage-lift: #faf7f8;
+  --ink: #292929;
+  --ink-strong: #121212;
+  --ink-soft: color-mix(in srgb, #292929 72%, #ffffff);
+  --teal: #13607e;
+  --teal-deep: #1f4f70;
+  --gold: #cb8100;
+  --rule: color-mix(in srgb, #292929 18%, #ffffff);
+  --shadow: 0 30px 80px rgba(44, 44, 48, 0.08);
+  --chrome: color-mix(in srgb, var(--stage) 92%, transparent);
+  --grain-opacity: 0.025;
+  --grain-blend: multiply;
+  --brand-filter: none;
+  --photo-scrim: rgba(44, 44, 48, 0.42);
+  --photo-overlay: rgba(44, 44, 48, 0.82);
+  --nav-panel: color-mix(in srgb, var(--stage) 96%, transparent);
+  --lightbox: color-mix(in srgb, var(--stage) 97%, transparent);
+  --lightbox-backdrop: #ffffff;
+  --theme-color: #ffffff;
+  --on-photo: #ffffff;
+  transition:
+    --stage var(--theme-ease),
+    --stage-lift var(--theme-ease),
+    --ink var(--theme-ease),
+    --ink-soft var(--theme-ease),
+    --teal var(--theme-ease),
+    --teal-deep var(--theme-ease),
+    --rule var(--theme-ease),
+    --chrome var(--theme-ease),
+    --photo-scrim var(--theme-ease),
+    --photo-overlay var(--theme-ease),
+    --nav-panel var(--theme-ease),
+    --lightbox var(--theme-ease),
+    --lightbox-backdrop var(--theme-ease),
+    --theme-color var(--theme-ease),
+    --on-photo var(--theme-ease),
+    --grain-opacity var(--theme-ease);
+}
+
+:root[data-theme="dark"] {
+  --color-scheme: dark;
+  --stage: #121212;
+  --stage-lift: #1c1c1c;
+  --ink: #f7f7f7;
+  --ink-strong: #ffffff;
+  --ink-soft: color-mix(in srgb, #dadada, #13607e 6%);
+  --teal: #68c6c5;
+  --teal-deep: #29b2b2;
+  --gold: #e6ab65;
+  --rule: rgba(255, 255, 255, 0.14);
+  --shadow: 0 30px 80px rgba(0, 0, 0, 0.45);
+  --chrome: color-mix(in srgb, var(--stage) 78%, transparent);
+  --grain-opacity: 0.06;
+  --grain-blend: overlay;
+  --brand-filter: grayscale(0.08) contrast(1.04);
+  --photo-scrim: rgba(18, 18, 18, 0.5);
+  --photo-overlay: rgba(18, 18, 18, 0.86);
+  --nav-panel: color-mix(in srgb, var(--stage) 96%, transparent);
+  --lightbox: color-mix(in srgb, var(--stage) 96%, transparent);
+  --lightbox-backdrop: #000000;
+  --theme-color: #121212;
+  --on-photo: #f7f7f7;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    transition: none;
+  }
+}

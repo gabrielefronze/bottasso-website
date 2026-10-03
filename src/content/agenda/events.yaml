@@ -1,0 +1,199 @@
+upcomingHeading: upcoming events
+pastHeading: selected past events
+hero: /images/agenda/hero.jpg
+heroCredit: "Photo: Fabiana Amato"
+upcoming:
+  - date: 2026.10.25 → 2026.10.31
+    title: Ensemble music workshop
+    venue: Mydriase
+    city: Bourgoin-Jallieu, France
+  - date: "2026.11.28"
+    title: Postcards from Italy
+    venue: Teatro Sociale
+    city: Bellinzona, Switzerland
+  - date: "2027.03.13"
+    title: Postcards from Italy
+    venue: Akkordeon Festival
+    city: Wien, Austria
+  - date: "2027.03.14"
+    title: Postcards from Italy
+    venue: Stieglerhaus
+    city: Graz, Austria
+  - date: 2027.04.29 → 2027.05.02
+    title: Violin workshop
+    venue: Spielkurs
+    city: Torgau, Germany
+past:
+  - year: "2026"
+    events:
+      - title: Het Muziek & Nils Petter Molvaer & Soheil Shahestey
+        venue: Gaudeamus Festival
+        city: Utrecht, The Netherlands
+      - title: Postcards from Italy
+        venue: LAC Lugano Arte Cultura
+        city: Lugano, Switzerland
+      - title: special project with visual artist Rickard Eklund
+        venue: Nonagon Festival
+        city: Svanö, Sweden
+      - title: Postcards from Italy
+        venue: Volpina Fest
+        city: La Piatta, Italy
+      - title: Postcards from Italy
+        venue: UnArchive Found Footage Fest
+        city: Roma, Italy
+      - title: Postcards from Italy
+        venue: Lecture at Università Tor Vergata
+        city: Roma, Italy
+      - title: Postcards from Italy
+        venue: DFF Deutsche Filminstituut & Filmmuseum
+        city: Frankfurt, Germany
+      - title: Postcards from Italy
+        venue: Istituto Italiano di Cultura di Colonia
+        city: Koeln, Germany
+      - title: Postcards from Italy
+        venue: Mixitè Performing Arts Research Center
+        city: Firenze, Italy
+      - title: Postcards from Italy
+        venue: Lecture at Codarts University
+        city: Rotterdam, The Netherlands
+      - title: Postcards from Italy
+        venue: Eye Filmmuseum
+        city: Amsterdam, The Netherlands
+  - year: "2025"
+    events:
+      - title: Neighbors feat. Nicolò Bottasso
+        venue: Bethlehemkerk Studio 150
+        city: Amsterdam, The Netherlands
+      - title: solo
+        venue: Combin en Arts
+        city: Doues, Italy
+      - title: Postcards from Italy
+        venue: Time in Jazz
+        city: Berchidda, Italy
+      - title: special project ‘OSA Open Sound’
+        venue: Heroes Festival
+        city: Torino, Italy
+  - year: "2024"
+    events:
+      - title: special project ‘Alentorn de la Taula’
+        venue: Stadthaussaal
+        city: Winterthur, Switzerland
+      - title: special project ‘Alentorn de la Taula’
+        venue: Musikschule Konservatorium Florhof
+        city: Zurich, Switzerland
+      - title: Caravan session with Julian Schneemann
+        venue: Kamermuziekfestival
+        city: Groningen, The Netherlands
+      - title: Sillons
+        venue: Festival de Chaillol
+        city: St. Michel de Chaillol, France
+      - title: Duo Bottasso
+        venue: Historisches Museum Frankfurt
+        city: Frankfurt, Germany
+      - title: Duo Bottasso & Wooli Duo
+        venue: (s)Nodi, Museo della Musica di Bologna
+        city: Bologna, Italy
+  - year: "2023"
+    events:
+      - title: Quartetto Loco feat. Marc Unternährer
+        venue: Schlossmediale
+        city: Werdenberg, Switzerland
+      - title: Quartetto Loco
+        venue: Alte Schmiede
+        city: Wien, Austria
+      - title: special project ‘OSA Open Sound’
+        venue: APM Scuola di Alto Perfezionamento
+        city: Saluzzo, Italy
+      - title: Duo Bottasso
+        venue: ’Musicaviva’ RSI Rete Svizzera Italiana
+        city: Lugano, Switzerland
+  - year: "2022"
+    events:
+      - title: Quartetto Loco
+        venue: Festival Musi’Queyras
+        city: Abriès, France
+      - title: Quartetto Loco
+        venue: (s)Nodi, Museo della Musica di Bologna
+        city: Bologna, Italy
+      - title: Duo Bottasso
+        venue: North Sea Round Town
+        city: Rotterdam, The Netherlands
+      - title: special project ‘Culture en Contrebande’
+        venue: UNESCO fortress of Mont-Dauphin
+        city: Mont-Dauphin, France
+  - year: "2021"
+    events:
+      - title: Il Cielo di Pietra
+        venue: Museo del Cinema di Torino
+        city: Torino, Italy
+      - title: solo
+        venue: Festival Imaginè
+        city: Vernante, Italy
+      - title: Duo Bottasso
+        venue: Adriatico Mediterraneo Festival
+        city: Ancona, Italy
+  - year: before 2020
+    events:
+      - title: special project ‘La Lontananza nostalgico utopico futura’
+        venue: Museo Ettore Fico
+        city: Torino, Italy
+      - title: special project ‘La Lontananza nostalgico utopico futura’
+        venue: Conservatorio di Torino
+        city: Torino, Italy
+      - title: Il Cielo di Pietra
+        venue: MACRO Museo di Arte Contemporanea Roma
+        city: Roma, Italy
+      - title: Il Cielo di Pietra
+        venue: Alpentoene Internationales Muzikfestival
+        city: Altdorf, Switzerland
+      - title: Il Cielo di Pietra
+        venue: Kaltern Pop Festival
+        city: Caldaro, Italy
+      - title: Pietra Tonale
+        venue: Torino Jazz Festival
+        city: Torino, Italy
+      - title: Duo Bottasso
+        venue: De Doelen, Rotterdam
+        city: The Netherlands
+      - title: Duo Bottasso
+        venue: Le Printemps des Arts
+        city: Principality of Monaco
+      - title: Duo Bottasso
+        venue: The Bird’s Eye
+        city: Basel, Switzerland
+      - title: Duo Bottasso
+        venue: Festival de Alturas
+        city: Lima, Peru
+      - title: Duo Bottasso
+        venue: Rudolstadt Festival
+        city: Rudolstadt, Germany
+      - title: Duo Bottasso
+        venue: Le Son Continu
+        city: Chateau d’Ars, France
+      - title: Duo Bottasso feat. Elena Ledda
+        venue: Il Jazz per le terre del Sisma
+        city: L’Aquila, Italy
+      - title: Duo Bottasso feat. Elena Ledda
+        venue: Folkclub Zuri
+        city: Zurich, Switzerland
+      - title: Duo Bottasso feat. Elena Ledda
+        venue: Folkclub Torino
+        city: Torino, Italy
+      - title: Linguamadre ’Il Canzoniere di Pasolini’
+        venue: L’automne des empreintes sonores
+        city: Annecy, France
+      - title: Linguamadre ’Il Canzoniere di Pasolini’
+        venue: Istituto Ernesto de Martino
+        city: Sesto Fiorentino, Italy
+      - title: Linguamadre ’Il Canzoniere di Pasolini’
+        venue: ChamoisIC, Valtournenche
+        city: Valtournenche, Italy
+      - title: Linguamadre ’Il Canzoniere di Pasolini’
+        venue: Mare & Miniere
+        city: Villacidro, Italy
+      - title: Linguamadre ’Il Canzoniere di Pasolini’
+        venue: Premio Città di Loano
+        city: Loano, Italy
+      - title: Linguamadre ’Il Canzoniere di Pasolini’
+        venue: Premio Andrea Parodi
+        city: Cagliari, Italy
