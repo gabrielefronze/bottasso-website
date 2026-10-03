@@ -11,7 +11,8 @@
     "preview": "astro preview",
     "check": "astro check",
     "astro": "astro",
-    "images:webp": "node scripts/convert-to-webp.mjs"
+    "images:webp": "node scripts/convert-to-webp.mjs",
+    "links:meta": "node scripts/fetch-link-meta.mjs && node scripts/convert-to-webp.mjs"
   },
   "dependencies": {
     "astro": "^7.3.5",
