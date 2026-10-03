@@ -1,68 +1,222 @@
 ---
+import "../styles/agenda.css";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import PageTitle from "../components/PageTitle.astro";
 import SmartImage from "../components/SmartImage.astro";
 import { getEntry } from "astro:content";
-import { getPage } from "../lib/content";
+import { getPage, getSite } from "../lib/content";
+import {
+  countries,
+  day,
+  eventKind,
+  fill,
+  formatRange,
+  groupByMonth,
+  icsFilename,
+  icsHref,
+  isoRange,
+  mapsUrl,
+  month,
+  parseRange,
+  splitCity,
+  weekday,
+} from "../lib/agenda";
 
 const page = await getPage("agenda");
+const site = await getSite();
 const agenda = await getEntry("agenda", "events");
 if (!agenda) throw new Error("Missing agenda events");
 const data = agenda.data;
+
+const labels = {
+  nextUp: "next up",
+  addToCalendar: "add to calendar",
+  map: "map",
+  kindWorkshop: "workshop",
+  kindLecture: "lecture",
+  kindLive: "live",
+  days: "{days} days",
+  stats: "{events} dates · {venues} venues · {countries} countries",
+  noUpcoming: "new dates are being confirmed.",
+  ...page.labels,
+};
+const kindLabel = { workshop: labels.kindWorkshop, lecture: labels.kindLecture, live: labels.kindLive };
+const siteInfo = { name: site.name, url: new URL("/agenda", Astro.site ?? Astro.url).href };
+
+/* ---- upcoming: parse, sort, group by month ---- */
+const upcoming = data.upcoming
+  .map((event) => {
+    const range = parseRange(event.date);
+    const kind = eventKind(event);
+    return {
+      ...event,
+      range,
+      kind,
+      ...splitCity(event.city),
+      ics: range ? icsHref(event, range, siteInfo) : undefined,
+      icsName: range ? icsFilename(event, range) : undefined,
+      maps: mapsUrl(event),
+    };
+  })
+  .sort((a, b) => (a.range?.start.getTime() ?? Infinity) - (b.range?.start.getTime() ?? Infinity));
+
+const next = upcoming[0];
+const months = groupByMonth(upcoming);
+
+/* ---- past: stats + rows ---- */
+const pastEvents = data.past.flatMap((g) => g.events);
+const allEvents = [...data.upcoming, ...pastEvents];
+const stats = fill(labels.stats, {
+  events: allEvents.length,
+  past: pastEvents.length,
+  upcoming: upcoming.length,
+  countries: countries(allEvents).size,
+  venues: new Set(allEvents.map((e) => e.venue)).size,
+});
 ---
 
 <BaseLayout title={page.title}>
-  <div class="wrap">
+  <div class="wrap agenda-page">
     <div data-reveal>
       <PageTitle title={page.title} />
     </div>
-    <figure class="hero-photo" data-reveal>
-      <SmartImage src={data.hero} alt="" />
-      <figcaption>{data.heroCredit}</figcaption>
-    </figure>
+
+    {
+      next ? (
+        <section class="agenda-next" data-reveal aria-label={labels.nextUp}>
+          <figure class="agenda-next-photo">
+            <SmartImage src={data.hero} alt="" loading="eager" />
+            <figcaption>{data.heroCredit}</figcaption>
+          </figure>
+          <div class="agenda-next-body">
+            <span class="agenda-eyebrow">{labels.nextUp}</span>
+            {next.range && (
+              <time class="agenda-next-date" datetime={isoRange(next.range)}>
+                {formatRange(next.range)}
+              </time>
+            )}
+            <h2 class="agenda-next-title">{next.title}</h2>
+            <p class="agenda-next-where">
+              <span class="venue">{next.venue}</span>
+              <span class="place">
+                {next.place}
+                {next.country && <span class="country">{next.country}</span>}
+              </span>
+            </p>
+            <div class="agenda-actions">
+              {next.ics && (
+                <a class="agenda-btn" href={next.ics} download={next.icsName}>
+                  {labels.addToCalendar}
+                </a>
+              )}
+              <a class="agenda-btn ghost" href={next.maps} target="_blank" rel="noreferrer">
+                {labels.map}
+              </a>
+            </div>
+          </div>
+        </section>
+      ) : (
+        <p class="agenda-empty" data-reveal>
+          {labels.noUpcoming}
+        </p>
+      )
+    }
 
     <h2 class="section-title" data-reveal>{data.upcomingHeading}</h2>
-    <table class="event-table upcoming" data-reveal>
-      <tbody>
-        {
-          data.upcoming.map((event) => (
-            <tr>
-              <td>{event.date}</td>
-              <td>{event.title}</td>
-              <td>{event.venue}</td>
-              <td>{event.city}</td>
-            </tr>
-          ))
-        }
-      </tbody>
-    </table>
+    <div class="agenda-upcoming">
+      {
+        months.map((group) => (
+          <section class="agenda-month">
+            <h3 class="agenda-month-label" data-reveal>
+              {group.label}
+            </h3>
+            <ol class="agenda-list">
+              {group.items.map((event, i) => (
+                <li class:list={["agenda-event", event.kind]} data-reveal style={`--i:${i}`}>
+                  {event.range ? (
+                    <time class="agenda-date" datetime={isoRange(event.range)}>
+                      <span class="wd">{weekday(event.range.start)}</span>
+                      <span class="d">{day(event.range.start)}</span>
+                      <span class="m">{month(event.range.start)}</span>
+                      {event.range.multiDay && (
+                        <span class="to">
+                          → {day(event.range.end)}
+                          {event.range.start.getUTCMonth() !== event.range.end.getUTCMonth() && ` ${month(event.range.end)}`}
+                        </span>
+                      )}
+                    </time>
+                  ) : (
+                    <span class="agenda-date tba">{event.date}</span>
+                  )}
+                  <div class="agenda-body">
+                    <span class="agenda-kind">
+                      {kindLabel[event.kind]}
+                      {event.range?.multiDay && <span class="dur">· {fill(labels.days, { days: event.range.days })}</span>}
+                    </span>
+                    <h4 class="agenda-title">{event.title}</h4>
+                    <p class="agenda-where">
+                      <span class="venue">{event.venue}</span>
+                      <span class="place">
+                        {event.place}
+                        {event.country && <span class="country">{event.country}</span>}
+                      </span>
+                    </p>
+                  </div>
+                  <div class="agenda-actions">
+                    {event.ics && (
+                      <a class="agenda-link" href={event.ics} download={event.icsName} title={labels.addToCalendar}>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true">
+                          <rect x="3.5" y="5" width="17" height="15.5" rx="1.5" />
+                          <path d="M3.5 9.5h17M8 3v4M16 3v4M12 12v6M9 15h6" />
+                        </svg>
+                        <span>{labels.addToCalendar}</span>
+                      </a>
+                    )}
+                    <a class="agenda-link" href={event.maps} target="_blank" rel="noreferrer" title={labels.map}>
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true">
+                        <path d="M12 21s-6.5-6.2-6.5-11a6.5 6.5 0 0 1 13 0c0 4.8-6.5 11-6.5 11Z" />
+                        <circle cx="12" cy="10" r="2.3" />
+                      </svg>
+                      <span>{labels.map}</span>
+                    </a>
+                  </div>
+                </li>
+              ))}
+            </ol>
+          </section>
+        ))
+      }
+    </div>
 
     <h2 class="section-title" data-reveal>{data.pastHeading}</h2>
-    <table class="event-table" data-reveal>
-      <tbody>
-        {
-          data.past.map((group) => (
-            <tr>
-              <td class="year">{group.year}</td>
-              <td>
-                {group.events.map((event) => (
-                  <div>{event.title}</div>
-                ))}
-              </td>
-              <td>
-                {group.events.map((event) => (
-                  <div>{event.venue}</div>
-                ))}
-              </td>
-              <td>
-                {group.events.map((event) => (
-                  <div>{event.city}</div>
-                ))}
-              </td>
-            </tr>
-          ))
-        }
-      </tbody>
-    </table>
+    <p class="agenda-stats" data-reveal>{stats}</p>
+    <div class="agenda-past">
+      {
+        data.past.map((group) => (
+          <section class="agenda-year" data-reveal>
+            <h3 class="agenda-year-label">
+              <span>{group.year}</span>
+              <small>{group.events.length}</small>
+            </h3>
+            <ul class="agenda-past-list">
+              {group.events.map((event, i) => {
+                const { place, country } = splitCity(event.city);
+                const repeat = i > 0 && group.events[i - 1].title === event.title;
+                return (
+                  <li class:list={["agenda-past-event", { repeat }]}>
+                    <span class="title">{event.title}</span>
+                    <span class="venue">{event.venue}</span>
+                    <span class="place">
+                      {place}
+                      {country && <span class="country">{country}</span>}
+                    </span>
+                  </li>
+                );
+              })}
+            </ul>
+          </section>
+        ))
+      }
+    </div>
   </div>
 </BaseLayout>

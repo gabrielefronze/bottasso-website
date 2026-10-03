@@ -1,10 +1,39 @@
 ---
+import { getSite } from "../lib/content";
+
+/**
+ * Title band of the inner pages. The homepage strings run behind the title
+ * (quieter, fewer self-plucks) so the instrument is never far away; the
+ * sound preference is the one chosen on the homepage.
+ */
 interface Props {
   title: string;
 }
+
 const { title } = Astro.props;
+const site = await getSite();
+const soundOn = site.labels?.soundOn ?? "sound on";
+const soundOff = site.labels?.soundOff ?? "sound off";
 ---
 
-<div class="page-kicker">
+<div class="page-kicker" data-strings-host>
+  <canvas class="kicker-canvas" data-strings aria-hidden="true"></canvas>
   <h1>{title}</h1>
+  <button class="sound-toggle" type="button" data-sound-toggle aria-pressed="false">
+    <span class="sound-bars" aria-hidden="true">
+      <i></i><i></i><i></i><i></i><i></i>
+    </span>
+    <span class="sound-label" data-on={soundOn} data-off={soundOff}>{soundOff}</span>
+  </button>
 </div>
+
+<script>
+  import { mountStrings, mountSound } from "../scripts/strings";
+
+  for (const host of document.querySelectorAll<HTMLElement>("[data-strings-host]")) {
+    const canvas = host.querySelector<HTMLCanvasElement>("[data-strings]");
+    if (!canvas) continue;
+    mountStrings(host, canvas, { alpha: 0.7, autoGain: 0.35, autoInterval: 3200 });
+    mountSound(host);
+  }
+</script>

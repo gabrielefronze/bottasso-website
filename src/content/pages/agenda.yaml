@@ -1,1 +1,12 @@
 title: AGENDA
+labels:
+  nextUp: next up
+  addToCalendar: add to calendar
+  map: map
+  kindWorkshop: workshop
+  kindLecture: lecture
+  kindLive: live
+  days: "{days} days"
+  # placeholders: {events} {past} {upcoming} {venues} {countries}
+  stats: "{events} dates · {venues} venues · {countries} countries"
+  noUpcoming: new dates are being confirmed — check back soon.

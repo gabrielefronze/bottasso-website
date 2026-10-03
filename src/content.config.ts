@@ -21,6 +21,7 @@ const site = defineCollection({
     socials: z.array(link),
     copyright: z.string(),
     skipLabel: z.string(),
+    labels: z.record(z.string(), z.string()).default({}),
   }),
 });
 
