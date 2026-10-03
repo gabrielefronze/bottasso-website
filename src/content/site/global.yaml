@@ -4,6 +4,8 @@ taglineLines:
   - curious listener
 portrait: /images/portrait-volpina.jpg
 nav:
+  - label: home
+    href: /
   - label: work
     href: /work
   - label: agenda
