@@ -41,6 +41,17 @@ const news = defineCollection({
   }),
 });
 
+/**
+ * Fields shared by everything rendered as a work card. Descriptions, covers and
+ * facts are pulled from the linked asset (see scripts/fetch-link-meta.mjs);
+ * `source` points at a different asset than the CTA when needed (e.g. the
+ * Bandcamp album behind a Linktree) and `description` overrides the fetched text.
+ */
+const linked = {
+  source: z.string().optional(),
+  description: z.string().optional(),
+};
+
 const work = defineCollection({
   loader: glob({ pattern: "*.yaml", base: "./src/content/work" }),
   schema: z.object({
@@ -52,6 +63,7 @@ const work = defineCollection({
     ctaLabel: z.string().optional(),
     href: z.string().optional(),
     order: z.number(),
+    ...linked,
   }),
 });
 
@@ -59,7 +71,7 @@ const collaborations = defineCollection({
   loader: glob({ pattern: "*.yaml", base: "./src/content/collaborations" }),
   schema: z.object({
     partner: z.string(),
-    works: z.array(link),
+    works: z.array(link.extend({ ...linked, image: z.string().optional() })),
     order: z.number(),
   }),
 });
@@ -71,7 +83,9 @@ const soundtracks = defineCollection({
     href: z.string(),
     credit: z.string(),
     note: z.string(),
+    image: z.string().optional(),
     order: z.number(),
+    ...linked,
   }),
 });
 

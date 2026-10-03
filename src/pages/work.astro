@@ -1,89 +1,107 @@
 ---
+import "../styles/work.css";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import PageTitle from "../components/PageTitle.astro";
-import SmartImage from "../components/SmartImage.astro";
+import VideoLightbox from "../components/VideoLightbox.astro";
+import WorkCard from "../components/WorkCard.astro";
 import { getPage, sortedCollection } from "../lib/content";
+import { describe, facts, linkMeta, assetKind } from "../lib/linkmeta";
 
 const page = await getPage("work");
 const projects = await sortedCollection("work");
 const collaborations = await sortedCollection("collaborations");
 const soundtracks = await sortedCollection("soundtracks");
+
+const labels = {
+  watch: "WATCH",
+  listen: "LISTEN",
+  visit: "DISCOVER MORE",
+  ...page.labels,
+};
+
+/** Default call to action from what the link points at. */
+function ctaFor(href?: string, fallback?: string) {
+  if (fallback) return fallback;
+  if (!href) return undefined;
+  const kind = assetKind(linkMeta(href));
+  if (kind === "video") return labels.watch;
+  if (kind === "album" || kind === "track" || kind === "release") return labels.listen;
+  return labels.visit;
+}
+
+/** Selected works: own cover + copy, enriched with facts from the linked asset. */
+const workCards = projects.map((p, i) => {
+  const asset = linkMeta(p.data.source ?? p.data.href);
+  return {
+    index: i,
+    title: p.data.title,
+    eyebrow: p.data.subtitle,
+    href: p.data.href,
+    image: p.data.image,
+    imageAlt: p.data.imageAlt,
+    description: describe(p.data.description, p.data.source, p.data.href),
+    facts: facts(asset),
+    tags: p.data.tags,
+    tracklist: asset?.tracklist,
+    cta: ctaFor(p.data.href, p.data.ctaLabel),
+  };
+});
+
+/** Collaborations: one card per released work, the partner as eyebrow. */
+const collabCards = collaborations.flatMap((row) =>
+  row.data.works.map((work) => {
+    const asset = linkMeta(work.source ?? work.href);
+    return {
+      title: work.label,
+      eyebrow: row.data.partner,
+      href: work.href,
+      image: work.image ?? asset?.image,
+      imageAlt: asset?.title ?? work.label,
+      description: describe(work.description, work.source, work.href),
+      facts: facts(asset),
+      tags: asset?.author && asset.author.trim() !== row.data.partner ? asset.author.trim() : undefined,
+      tracklist: asset?.tracklist,
+      cta: ctaFor(work.href),
+    };
+  }),
+);
+
+/** Soundtracks: film pages, with the production credit as eyebrow. */
+const soundtrackCards = soundtracks.map((row) => {
+  const asset = linkMeta(row.data.source ?? row.data.href);
+  return {
+    title: row.data.title,
+    eyebrow: row.data.credit,
+    href: row.data.href,
+    image: row.data.image ?? asset?.image,
+    imageAlt: asset?.title ?? row.data.title,
+    description: describe(row.data.description, row.data.source, row.data.href),
+    facts: facts(asset),
+    tags: row.data.note,
+    cta: ctaFor(row.data.href),
+  };
+});
 ---
 
 <BaseLayout title={page.title}>
-  <div class="wrap bleed">
+  <div class="wrap work-page">
     <div data-reveal>
       <PageTitle title={page.title} />
     </div>
-    <div class="work-grid">
-      {
-        projects.map((project) => {
-          const Tag = project.data.href ? "a" : "article";
-          const extra = project.data.href
-            ? { href: project.data.href, rel: "noreferrer" }
-            : {};
-          return (
-            <Tag class="work-card" data-reveal {...extra}>
-              <div class="frame">
-                <SmartImage src={project.data.image} alt={project.data.imageAlt} />
-                <div class="work-overlay">
-                  <h2>{project.data.title}</h2>
-                  {project.data.subtitle && <span class="sub">{project.data.subtitle}</span>}
-                  <span class="tags">{project.data.tags}</span>
-                  {project.data.ctaLabel && <span class="cta">{project.data.ctaLabel}</span>}
-                </div>
-              </div>
-            </Tag>
-          );
-        })
-      }
-    </div>
 
-    <div class="wrap">
-      <h2 class="section-title" data-reveal>{page.sections?.collaborations}</h2>
-      <table class="pair-list" data-reveal>
-        <tbody>
-          {
-            collaborations.map((row) => (
-              <tr>
-                <td>{row.data.partner}</td>
-                <td>
-                  {row.data.works.map((work, index) => (
-                    <>
-                      {index > 0 && " | "}
-                      <a href={work.href} rel="noreferrer">
-                        {work.label}
-                      </a>
-                    </>
-                  ))}
-                </td>
-              </tr>
-            ))
-          }
-        </tbody>
-      </table>
+    <section class="wcard-grid featured" aria-label={page.title}>
+      {workCards.map((card) => <WorkCard {...card} />)}
+    </section>
 
-      <h2 class="section-title" data-reveal>{page.sections?.soundtracks}</h2>
-      <table class="pair-list" data-reveal>
-        <tbody>
-          {
-            soundtracks.map((row) => (
-              <tr>
-                <td>
-                  <a href={row.data.href} rel="noreferrer">
-                    {row.data.title}
-                  </a>
-                </td>
-                <td>
-                  {row.data.credit}
-                  <br />
-                  {row.data.note}
-                </td>
-              </tr>
-            ))
-          }
-        </tbody>
-      </table>
-    </div>
+    <h2 class="section-title" data-reveal>{page.sections?.collaborations}</h2>
+    <section class="wcard-grid" aria-label={page.sections?.collaborations}>
+      {collabCards.map((card, i) => <WorkCard {...card} index={i} />)}
+    </section>
+
+    <h2 class="section-title" data-reveal>{page.sections?.soundtracks}</h2>
+    <section class="wcard-grid" aria-label={page.sections?.soundtracks}>
+      {soundtrackCards.map((card, i) => <WorkCard {...card} index={i} />)}
+    </section>
   </div>
+  <VideoLightbox />
 </BaseLayout>

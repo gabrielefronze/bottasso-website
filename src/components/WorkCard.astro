@@ -1,0 +1,82 @@
+---
+import SmartImage from "./SmartImage.astro";
+import { videoEmbed } from "../lib/video";
+
+/**
+ * One card of the Work page. Used for selected works, collaborations and
+ * soundtracks alike so the three sections read as one body of work.
+ */
+interface Props {
+  title: string;
+  /** Who it is with / by — shown above the title. */
+  eyebrow?: string;
+  href?: string;
+  image?: string;
+  imageAlt?: string;
+  description?: string;
+  /** e.g. ["video", "49 min", "2023"] */
+  facts?: string[];
+  /** Free-form tag line, e.g. "expanded cinema • soundtrack". */
+  tags?: string;
+  tracklist?: string[];
+  cta?: string;
+  index?: number;
+}
+
+const {
+  title,
+  eyebrow,
+  href,
+  image,
+  imageAlt = title,
+  description,
+  facts = [],
+  tags,
+  tracklist = [],
+  cta,
+  index = 0,
+} = Astro.props;
+
+const video = videoEmbed(href);
+const Tag = href ? "a" : "article";
+const extra = href ? { href, rel: "noreferrer", "data-video": video?.src } : {};
+const MAX_TRACKS = 5;
+const shownTracks = tracklist.slice(0, MAX_TRACKS);
+const moreTracks = tracklist.length - shownTracks.length;
+const initial = title.trim().charAt(0).toUpperCase();
+---
+
+<Tag class:list={["wcard", { "has-video": !!video, "no-link": !href }]} data-reveal style={`--i:${index}`} {...extra}>
+  <div class="wcard-media">
+    {
+      image ? (
+        <SmartImage src={image} alt={imageAlt} />
+      ) : (
+        <div class="wcard-placeholder" aria-hidden="true">
+          <span>{initial}</span>
+        </div>
+      )
+    }
+    {facts.length > 0 && <span class="wcard-facts">{facts.join(" · ")}</span>}
+    {video && <span class="wcard-play" aria-hidden="true" />}
+  </div>
+  <div class="wcard-body">
+    {eyebrow && <span class="wcard-eyebrow">{eyebrow}</span>}
+    <h3 class="wcard-title">{title}</h3>
+    {description && <p class="wcard-desc">{description}</p>}
+    {
+      shownTracks.length > 0 && (
+        <ol class="wcard-tracks" aria-label="tracks">
+          {shownTracks.map((track) => (
+            <li>{track}</li>
+          ))}
+          {moreTracks > 0 && <li class="more">+{moreTracks}</li>}
+        </ol>
+      )
+    }
+    <div class="wcard-foot">
+      {tags && <span class="wcard-tags">{tags}</span>}
+      {cta && href && <span class="cta">{cta}</span>}
+    </div>
+  </div>
+</Tag>

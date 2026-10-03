@@ -5,3 +5,5 @@ image: /images/work/quartetto-loco.png
 imageAlt: Quartetto Loco
 ctaLabel: DISCOVER MORE
 href: https://www.quartettoloco.com/
+# the quartet's site has no cover art; take it from the EP
+source: https://simonebottasso.bandcamp.com/album/a-dozen-words-for-six

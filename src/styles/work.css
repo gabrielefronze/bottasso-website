@@ -1,0 +1,284 @@
+/* Work page — rich cards shared by selected works, collaborations and soundtracks */
+
+.work-page .section-title {
+  margin-top: 5.5rem;
+}
+
+.wcard-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 2.2rem 1.4rem;
+  align-items: stretch;
+}
+
+.wcard {
+  --lift: 0px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  color: inherit;
+  text-decoration: none;
+  background: color-mix(in srgb, var(--ink) 3%, var(--stage));
+  border: 1px solid var(--rule);
+  transform: translateY(var(--lift));
+  transition:
+    transform 0.6s cubic-bezier(0.2, 0.7, 0.2, 1),
+    border-color 0.5s ease,
+    box-shadow 0.6s ease;
+}
+
+.js .wcard[data-reveal].is-in {
+  transition-delay: calc(var(--i, 0) * 70ms);
+}
+
+.wcard:hover,
+.wcard:focus-visible {
+  --lift: -4px;
+  border-color: color-mix(in srgb, var(--teal) 55%, var(--rule));
+  box-shadow: 0 24px 50px -30px color-mix(in srgb, var(--ink) 45%, transparent);
+  outline: none;
+}
+
+/* ---- media ---- */
+
+.wcard-media {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  background: color-mix(in srgb, var(--ink) 8%, var(--stage));
+}
+
+.wcard-media picture,
+.wcard-media img {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.wcard-media img {
+  object-fit: cover;
+  transform: scale(1.001);
+  transition:
+    transform 1.2s cubic-bezier(0.2, 0.7, 0.2, 1),
+    filter 0.8s ease;
+}
+
+.wcard:hover img,
+.wcard:focus-visible img {
+  transform: scale(1.06);
+}
+
+.wcard-media::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 55%, color-mix(in srgb, var(--photo-scrim) 80%, transparent));
+  pointer-events: none;
+  opacity: 0.9;
+  transition: opacity 0.6s ease;
+}
+
+.wcard-placeholder {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background:
+    radial-gradient(120% 90% at 20% 10%, color-mix(in srgb, var(--teal) 28%, transparent), transparent 60%),
+    radial-gradient(90% 90% at 90% 90%, color-mix(in srgb, var(--gold) 22%, transparent), transparent 60%),
+    color-mix(in srgb, var(--ink) 10%, var(--stage));
+}
+
+.wcard-placeholder span {
+  font-family: var(--serif);
+  font-weight: 300;
+  font-size: clamp(4rem, 12vw, 7rem);
+  letter-spacing: -0.04em;
+  color: color-mix(in srgb, var(--ink) 40%, transparent);
+}
+
+.wcard-facts {
+  position: absolute;
+  left: 0.9rem;
+  bottom: 0.8rem;
+  z-index: 1;
+  font-family: var(--sans);
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--on-photo);
+  opacity: 0.92;
+}
+
+.wcard-play {
+  position: absolute;
+  right: 0.9rem;
+  bottom: 0.75rem;
+  z-index: 1;
+  width: 2.3rem;
+  height: 2.3rem;
+  border-radius: 50%;
+  border: 1px solid color-mix(in srgb, var(--on-photo) 70%, transparent);
+  background: color-mix(in srgb, var(--photo-overlay) 70%, transparent);
+  transition:
+    transform 0.5s cubic-bezier(0.2, 0.7, 0.2, 1),
+    background 0.4s ease;
+}
+
+.wcard-play::before {
+  content: "";
+  position: absolute;
+  left: 52%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  border-style: solid;
+  border-width: 0.38em 0 0.38em 0.62em;
+  border-color: transparent transparent transparent var(--on-photo);
+}
+
+.wcard:hover .wcard-play {
+  transform: scale(1.1);
+  background: color-mix(in srgb, var(--teal) 75%, transparent);
+}
+
+/* ---- body ---- */
+
+.wcard-body {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  gap: 0.55rem;
+  padding: 1.25rem 1.3rem 1.3rem;
+}
+
+.wcard-eyebrow {
+  font-family: var(--sans);
+  font-size: 0.78rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--teal);
+}
+
+.wcard-title {
+  margin: 0;
+  font-family: var(--serif);
+  font-weight: 300;
+  font-size: 1.55rem;
+  line-height: 1.12;
+  letter-spacing: -0.02em;
+  color: var(--ink-strong);
+  transition: color 0.4s ease;
+}
+
+.wcard:hover .wcard-title {
+  color: var(--teal);
+}
+
+.wcard-desc {
+  margin: 0.15rem 0 0;
+  font-size: 0.96rem;
+  line-height: 1.55;
+  color: var(--ink);
+}
+
+.wcard-tracks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin: 0.4rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.wcard-tracks li {
+  font-family: var(--sans);
+  font-size: 0.74rem;
+  line-height: 1;
+  padding: 0.38rem 0.6rem;
+  border: 1px solid var(--rule);
+  color: var(--ink-soft);
+  white-space: nowrap;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.wcard-tracks li.more {
+  border-style: dashed;
+}
+
+.wcard-foot {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: auto;
+  padding-top: 0.9rem;
+}
+
+.wcard-tags {
+  font-style: italic;
+  font-size: 0.86rem;
+  color: var(--ink-soft);
+  min-width: 0;
+}
+
+.wcard .cta {
+  flex-shrink: 0;
+  font-family: var(--sans);
+  font-size: 0.76rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--teal);
+  white-space: nowrap;
+}
+
+.wcard .cta::after {
+  content: "→";
+  display: inline-block;
+  margin-left: 0.45em;
+  transition: transform 0.4s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.wcard:hover .cta::after {
+  transform: translateX(4px);
+}
+
+.wcard.no-link {
+  cursor: default;
+}
+
+/* ---- responsive ---- */
+
+@media (max-width: 1100px) {
+  .wcard-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .wcard-grid {
+    grid-template-columns: 1fr;
+    gap: 1.6rem;
+  }
+
+  .work-page .section-title {
+    margin-top: 3.5rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wcard,
+  .wcard img,
+  .wcard-play,
+  .wcard .cta::after {
+    transition: none;
+  }
+
+  .wcard:hover img {
+    transform: none;
+  }
+}

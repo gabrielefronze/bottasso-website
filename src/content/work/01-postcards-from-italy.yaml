@@ -6,3 +6,5 @@ image: /images/work/postcards-from-italy.png
 imageAlt: Postcards from Italy album cover
 ctaLabel: DISCOVER MORE
 href: https://linktr.ee/duobottasso
+# the Linktree is only a hub: describe the work through the album itself
+source: https://simonebottasso.bandcamp.com/album/postcards-from-italy
