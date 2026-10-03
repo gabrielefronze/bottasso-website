@@ -1,48 +1,270 @@
 ---
+import "../styles/home.css";
 import BaseLayout from "../layouts/BaseLayout.astro";
-import PageTitle from "../components/PageTitle.astro";
 import SmartImage from "../components/SmartImage.astro";
-import { getPage, sortedCollection } from "../lib/content";
+import VideoLightbox from "../components/VideoLightbox.astro";
+import { videoEmbed } from "../lib/video";
+import { getEntry } from "astro:content";
+import { getPage, getSite, sortedCollection } from "../lib/content";
 import { renderCopy } from "../lib/copy";
+import { splitWords } from "../lib/words";
 
+const site = await getSite();
 const page = await getPage("home");
+const about = await getPage("about");
 const news = await sortedCollection("news");
+const work = await sortedCollection("work");
+const agenda = (await getEntry("agenda", "events"))?.data;
+const media = (await getEntry("media", "gallery"))?.data;
+
+const intro = page.intro;
+const labels = page.labels;
+const nameWords = site.name.split(" ");
+const statement = page.statement ? splitWords(page.statement) : null;
+
+const upcoming = agenda?.upcoming.slice(0, 4) ?? [];
+const venues = Array.from(
+  new Set(
+    [...(agenda?.upcoming ?? []), ...(agenda?.past.flatMap((y) => y.events) ?? [])].map((e) =>
+      e.venue.replace(/^Lecture at /i, ""),
+    ),
+  ),
+).slice(0, 26);
+
+const photos = media?.photos ?? [];
+const stripA = photos.filter((_, i) => i % 2 === 0);
+const stripB = photos.filter((_, i) => i % 2 === 1);
+
+const quote = [...about.reviews].sort((a, b) => a.quote.length - b.quote.length)[0];
+const quoteWords = quote ? splitWords(`“${quote.quote.trim()}”`) : null;
+
+let charIndex = 0;
 ---
 
 <BaseLayout>
-  <div class="wrap">
-    <div data-reveal>
-      <PageTitle title={page.title} />
+  <div class="home">
+    <div class="curtain" aria-hidden="true">
+      <span>{site.name}</span>
     </div>
-    <div class="news-list">
-      {
-        news.map((item) => (
-          <article class:list={["news-item", item.data.layout]} data-reveal>
-            <time class="news-date" datetime={item.data.date}>
-              {item.data.dateLabel}
-            </time>
-            <div class="news-copy">
-              <h2>{item.data.title}</h2>
-              <div set:html={renderCopy(item.data.body)} />
-              <p>
-                <a class="cta" href={item.data.href}>
-                  {item.data.ctaLabel}
-                </a>
+    <script is:inline>
+      (() => {
+        const home = document.querySelector(".home");
+        const seen = sessionStorage.getItem("intro-seen");
+        if (seen) home?.classList.add("intro-skipped");
+        sessionStorage.setItem("intro-seen", "1");
+      })();
+    </script>
+
+    {
+      intro && (
+        <section class="hero" aria-label={site.name}>
+          <div class="hero-aura" aria-hidden="true" />
+          <canvas class="hero-canvas" data-strings aria-hidden="true" />
+          <div class="hero-spot" aria-hidden="true" />
+
+          <div class="hero-copy">
+            <p class="hero-eyebrow">{intro.eyebrow}</p>
+            <h1 class="hero-title" aria-label={site.name}>
+              {nameWords.map((word) => (
+                <span class="word" aria-hidden="true">
+                  {Array.from(word).map((ch) => (
+                    <span class="ch" style={`--i:${charIndex++}`}>
+                      {ch}
+                    </span>
+                  ))}
+                </span>
+              ))}
+            </h1>
+            <div class="hero-meta">
+              <p class="hero-tagline">
+                {site.taglineLines.map((line) => (
+                  <span>{line}</span>
+                ))}
               </p>
-              {item.data.extraLinks.map((link) => (
+              <div class="hero-ctas">
+                {intro.ctas.map((cta) => (
+                  <a class="magnet" href={cta.href} rel={cta.href.startsWith("http") ? "noreferrer" : undefined}>
+                    <span>{cta.label}</span>
+                  </a>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          <figure class="hero-figure" data-tilt>
+            <SmartImage src={intro.image} alt={intro.imageAlt} loading="eager" />
+            {intro.imageCredit && <figcaption>{intro.imageCredit}</figcaption>}
+          </figure>
+
+          <a class="scroll-hint" href="#statement">
+            <span>{intro.scrollHint}</span>
+            <i aria-hidden="true" />
+          </a>
+
+          <button class="sound-toggle" type="button" data-sound-toggle aria-pressed="false">
+            <span class="sound-bars" aria-hidden="true">
+              <i /><i /><i /><i /><i />
+            </span>
+            <span class="sound-label" data-on={labels.soundOn} data-off={labels.soundOff}>
+              {labels.soundOff}
+            </span>
+          </button>
+        </section>
+      )
+    }
+
+    {
+      statement && (
+        <section class="statement" id="statement">
+          <p class="words" data-words style={`--n:${statement.count}`} set:html={statement.html} />
+        </section>
+      )
+    }
+
+    {
+      venues.length > 0 && (
+        <div class="marquee" aria-hidden="true">
+          <div class="marquee-track">
+            {[0, 1].map(() =>
+              venues.map((venue) => (
+                <span>
+                  {venue}
+                  <i>✦</i>
+                </span>
+              )),
+            )}
+          </div>
+        </div>
+      )
+    }
+
+    <section class="home-section stack-section">
+      <header class="home-head" data-reveal>
+        <h2 class="section-title">{labels.work}</h2>
+        <a class="line-link" href="/work">{labels.workAll}</a>
+      </header>
+      <div class="stack">
+        {
+          work.map((project, index) => {
+            const Tag = project.data.href ? "a" : "article";
+            const video = videoEmbed(project.data.href);
+            const extra = project.data.href
+              ? { href: project.data.href, rel: "noreferrer", "data-video": video?.src }
+              : {};
+            return (
+              <Tag class:list={["stack-card", { "has-video": !!video }]} style={`--i:${index}`} {...extra}>
+                <div class="stack-media">
+                  <SmartImage src={project.data.image} alt={project.data.imageAlt} />
+                </div>
+                <div class="stack-body" data-num={String(index + 1).padStart(2, "0")}>
+                  <span class="stack-num">
+                    {String(index + 1).padStart(2, "0")} / {String(work.length).padStart(2, "0")}
+                  </span>
+                  <h3>{project.data.title}</h3>
+                  {project.data.subtitle && <span class="stack-sub">{project.data.subtitle}</span>}
+                  <span class="stack-tags">{project.data.tags}</span>
+                  {project.data.ctaLabel && <span class="cta">{project.data.ctaLabel}</span>}
+                </div>
+              </Tag>
+            );
+          })
+        }
+      </div>
+    </section>
+
+    {
+      upcoming.length > 0 && (
+        <section class="home-section nextup">
+          <header class="home-head" data-reveal>
+            <h2 class="section-title">{labels.agenda}</h2>
+            <a class="line-link" href="/agenda">{labels.agendaAll}</a>
+          </header>
+          <ol class="nextup-list">
+            {upcoming.map((event, index) => (
+              <li class="nextup-item" data-reveal style={`--i:${index}`}>
+                <span class="nextup-date">{event.date}</span>
+                <span class="nextup-title">{event.title}</span>
+                <span class="nextup-place">
+                  {event.venue}
+                  <br />
+                  {event.city}
+                </span>
+              </li>
+            ))}
+          </ol>
+        </section>
+      )
+    }
+
+    {
+      photos.length > 0 && (
+        <section class="strip" aria-label={labels.media}>
+          <header class="home-head strip-head" data-reveal>
+            <h2 class="section-title">{labels.media}</h2>
+            <a class="line-link" href="/media">{labels.mediaAll}</a>
+          </header>
+          {[stripA, stripB].map((row, rowIndex) => (
+            <div class:list={["strip-row", { reverse: rowIndex === 1 }]}>
+              {[0, 1].map((copy) =>
+                row.map((photo) => (
+                  <a href="/media" tabindex={copy === 1 ? -1 : undefined} aria-hidden={copy === 1 || undefined}>
+                    <SmartImage src={photo.src} alt={copy === 0 ? photo.alt : ""} />
+                  </a>
+                )),
+              )}
+            </div>
+          ))}
+        </section>
+      )
+    }
+
+    {
+      quote && quoteWords && (
+        <section class="pullquote">
+          <p class="pullquote-kicker" data-reveal>{labels.quote}</p>
+          <blockquote class="words" data-words style={`--n:${quoteWords.count}`} set:html={quoteWords.html} />
+          <cite data-reveal>
+            {quote.name}
+            <span>{quote.role}</span>
+          </cite>
+        </section>
+      )
+    }
+
+    <section class="home-section">
+      <h2 class="section-title news-title" data-reveal>{page.sections?.news ?? page.title}</h2>
+      <div class="news-list">
+        {
+          news.map((item) => (
+            <article class:list={["news-item", item.data.layout]} data-reveal>
+              <time class="news-date" datetime={item.data.date}>
+                {item.data.dateLabel}
+              </time>
+              <div class="news-copy">
+                <h2>{item.data.title}</h2>
+                <div set:html={renderCopy(item.data.body)} />
                 <p>
-                  <a href={link.href}>
-                    <strong>{link.label}</strong>
+                  <a class="cta" href={item.data.href}>
+                    {item.data.ctaLabel}
                   </a>
                 </p>
-              ))}
-            </div>
-            <a class="news-visual" href={item.data.href}>
-              <SmartImage src={item.data.image} alt={item.data.imageAlt} />
-            </a>
-          </article>
-        ))
-      }
-    </div>
+                {item.data.extraLinks.map((link) => (
+                  <p>
+                    <a href={link.href}>
+                      <strong>{link.label}</strong>
+                    </a>
+                  </p>
+                ))}
+              </div>
+              <a class="news-visual" href={item.data.href}>
+                <SmartImage src={item.data.image} alt={item.data.imageAlt} />
+              </a>
+            </article>
+          ))
+        }
+      </div>
+    </section>
   </div>
+  <VideoLightbox />
+  <script src="../scripts/home.ts"></script>
 </BaseLayout>

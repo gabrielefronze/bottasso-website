@@ -148,6 +148,18 @@ const pages = defineCollection({
       .default([]),
     hero: z.string().optional(),
     heroCredit: z.string().optional(),
+    intro: z
+      .object({
+        eyebrow: z.string(),
+        image: z.string(),
+        imageAlt: z.string(),
+        imageCredit: z.string().optional(),
+        scrollHint: z.string(),
+        ctas: z.array(link).default([]),
+      })
+      .optional(),
+    statement: z.string().optional(),
+    labels: z.record(z.string(), z.string()).default({}),
     pressCredit: z.string().optional(),
     pressDownload: link.optional(),
     sections: z

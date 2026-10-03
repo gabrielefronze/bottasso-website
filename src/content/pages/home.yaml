@@ -1,3 +1,28 @@
 title: NEWS
+intro:
+  eyebrow: violin · trumpet · tenore d’amore · live processing
+  image: /images/media/press/press-03.jpg
+  imageAlt: Nicolò Bottasso, press portrait
+  imageCredit: "Photo: Federico Castelli"
+  scrollHint: scroll
+  ctas:
+    - label: listen
+      href: https://simonebottasso.bandcamp.com/
+    - label: upcoming dates
+      href: /agenda
+statement: >
+  A sonic practice built on **improvisation**, **timbre** and **repetition** —
+  acoustic instruments and live processing in dialogue with moving image,
+  archival material and site-specific performance.
+labels:
+  work: selected work
+  workAll: all work
+  agenda: next up
+  agendaAll: full agenda
+  media: on stage
+  mediaAll: all photos
+  quote: they said
+  soundOn: sound on
+  soundOff: sound off
 sections:
   news: NEWS
